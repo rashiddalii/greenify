@@ -1,6 +1,6 @@
 # Greenify - Online Plant Store
 
-**Greenify**] is a simple and efficient online plant store built with core PHP, designed to provide a seamless shopping experience for plant enthusiasts. It comes with an easy-to-use admin panel to manage inventory and integrates the Stripe payment method for secure transactions.
+**Greenify** is a simple and efficient online plant store built with core PHP, designed to provide a seamless shopping experience for plant enthusiasts. It comes with an easy-to-use admin panel to manage inventory and integrates the Stripe payment method for secure transactions.
 
 # Installation
 
