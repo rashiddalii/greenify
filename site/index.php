@@ -1,13 +1,13 @@
 <?php
-    session_start();  
-    require('common/connect.php');
-    if(isset($_GET['profile'] )){
-        $profile = $_GET['profile']  ;
-        $user_id =  $profile - 10201211;
-    }else{
-        $profile = 10201211;
-        $user_id =  $profile;
-    }
+session_start();
+require('common/connect.php');
+if (isset($_GET['profile'])) {
+    $profile = $_GET['profile'];
+    $user_id =  $profile - 10201211;
+} else {
+    $profile = 10201211;
+    $user_id =  $profile;
+}
 ?>
 
 <!DOCTYPE html>
@@ -25,7 +25,7 @@
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">  
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -54,57 +54,57 @@
 
 
             <?php
-                if(isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == "true")
-                {
+            if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] == "true") {
 
-                    $qry = "SELECT * FROM register_users WHERE id = '$user_id'";
-                    $res = mysqli_query($con,$qry);
+                $qry = "SELECT * FROM register_users WHERE id = '$user_id'";
+                $res = mysqli_query($con, $qry);
 
-                    if(mysqli_num_rows($res) == 1)
-                    {
-                        $arr = mysqli_fetch_array($res);
-                
+                if (mysqli_num_rows($res) == 1) {
+                    $arr = mysqli_fetch_array($res);
+
             ?>
                     <div class="col-lg-6 text-center text-lg-right">
                         <div class="d-inline-flex align-items-center">
                             <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown"> <?php echo $arr['firstName']." ".$arr['lastName']?> </button>
+                                <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown"> <?php echo $arr['firstName'] . " " . $arr['lastName'] ?> </button>
                                 <div class="dropdown-menu dropdown-menu-right">
                                     <?php $profile =  $arr['id'] + 10201211;
-                                        // echo "<a href='../vendor/index.php?profile=$profile' class='dropdown-item'>Add Products</a>";
-                                        echo "<a href='../logout.php' class='dropdown-item'>Sign out</a>";
+                                    // echo "<a href='../vendor/index.php?profile=$profile' class='dropdown-item'>Add Products</a>";
+                                    echo "<a href='../logout.php' class='dropdown-item'>Sign out</a>";
+                                    echo "<a href='src/profile.php?profile=$profile' class='dropdown-item'>My Profile</a>";
+
                                     ?>
                                 </div>
                             </div>
                         </div>
                     </div>
-            <?php 
+                <?php
 
-                }}
-                else {
-                
-            ?>    
-                    <div class="col-lg-6 text-center text-lg-right">
-                        <div class="d-inline-flex align-items-center">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown"> My Account </button>
-                                <div class="dropdown-menu dropdown-menu-right">
+                }
+            } else {
+
+                ?>
+                <div class="col-lg-6 text-center text-lg-right">
+                    <div class="d-inline-flex align-items-center">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown"> My Account </button>
+                            <div class="dropdown-menu dropdown-menu-right">
                                 <a href="../account-RL/sign-in/index.php" class="dropdown-item">Sign in</a>
-                                    <a href="../account-RL/sign-up/index.php" class="dropdown-item">Sign up</a>
-                                </div>
+                                <a href="../account-RL/sign-up/index.php" class="dropdown-item">Sign up</a>
                             </div>
                         </div>
                     </div>
-            <?php  
-                    }      
-            
-            ?>                
+                </div>
+            <?php
+            }
+
+            ?>
         </div>
         <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
             <div class="col-lg-4">
                 <a href="" class="text-decoration-none">
-                        <span class="h1 text-uppercase text-light bg-dark px-2">GREEN</span>
-                        <span class="h1 text-uppercase text-dark bg-success px-2 ml-n1">IFY</span>
+                    <span class="h1 text-uppercase text-light bg-dark px-2">GREEN</span>
+                    <span class="h1 text-uppercase text-dark bg-success px-2 ml-n1">IFY</span>
                 </a>
             </div>
             <div class="col-lg-4 col-6 text-left">
@@ -183,9 +183,9 @@
                                 <i class="fas fa-shopping-cart text-success"></i>
                                 <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">
                                     <?php
-                                        $qry = "SELECT *  FROM add_to_cart WHERE user_id = '$user_id'";
-                                        $res = mysqli_query($con,$qry);
-                                        echo mysqli_num_rows($res);
+                                    $qry = "SELECT *  FROM add_to_cart WHERE user_id = '$user_id'";
+                                    $res = mysqli_query($con, $qry);
+                                    echo mysqli_num_rows($res);
                                     ?>
                                 </span>
                             </a>
@@ -311,9 +311,9 @@
                             <h6>Trees</h6>
                             <small class="text-body pr-4">
                                 <?php
-                                    $qry = "SELECT *  FROM add_product WHERE itemCategory = 'Tress'";
-                                    $res = mysqli_query($con,$qry);
-                                    echo mysqli_num_rows($res);
+                                $qry = "SELECT *  FROM add_product WHERE itemCategory = 'Tress'";
+                                $res = mysqli_query($con, $qry);
+                                echo mysqli_num_rows($res);
                                 ?>
                                 Products
                             </small>
@@ -331,9 +331,9 @@
                             <h6>Liverworts</h6>
                             <small class="text-body pr-4">
                                 <?php
-                                    $qry = "SELECT *  FROM add_product WHERE itemCategory = 'Liverworts'";
-                                    $res = mysqli_query($con,$qry);
-                                    echo mysqli_num_rows($res);
+                                $qry = "SELECT *  FROM add_product WHERE itemCategory = 'Liverworts'";
+                                $res = mysqli_query($con, $qry);
+                                echo mysqli_num_rows($res);
                                 ?>
                                 Products
                             </small>
@@ -351,9 +351,9 @@
                             <h6>Annual Plant</h6>
                             <small class="text-body pr-4">
                                 <?php
-                                    $qry = "SELECT *  FROM add_product WHERE itemCategory = 'Annual Plant'";
-                                    $res = mysqli_query($con,$qry);
-                                    echo mysqli_num_rows($res);
+                                $qry = "SELECT *  FROM add_product WHERE itemCategory = 'Annual Plant'";
+                                $res = mysqli_query($con, $qry);
+                                echo mysqli_num_rows($res);
                                 ?>
                                 Products
                             </small>
@@ -371,9 +371,9 @@
                             <h6>Flowers</h6>
                             <small class="text-body pr-4">
                                 <?php
-                                    $qry = "SELECT *  FROM add_product WHERE itemCategory = 'Flowers'";
-                                    $res = mysqli_query($con,$qry);
-                                    echo mysqli_num_rows($res);
+                                $qry = "SELECT *  FROM add_product WHERE itemCategory = 'Flowers'";
+                                $res = mysqli_query($con, $qry);
+                                echo mysqli_num_rows($res);
                                 ?>
                                 Products
                             </small>
@@ -391,9 +391,9 @@
                             <h6>Orchids</h6>
                             <small class="text-body pr-4">
                                 <?php
-                                    $qry = "SELECT *  FROM add_product WHERE itemCategory = 'Orchids'";
-                                    $res = mysqli_query($con,$qry);
-                                    echo mysqli_num_rows($res);
+                                $qry = "SELECT *  FROM add_product WHERE itemCategory = 'Orchids'";
+                                $res = mysqli_query($con, $qry);
+                                echo mysqli_num_rows($res);
                                 ?>
                                 Products
                             </small>
@@ -411,9 +411,9 @@
                             <h6>Grasses</h6>
                             <small class="text-body pr-4">
                                 <?php
-                                    $qry = "SELECT *  FROM add_product WHERE itemCategory = 'Grasses'";
-                                    $res = mysqli_query($con,$qry);
-                                    echo mysqli_num_rows($res);
+                                $qry = "SELECT *  FROM add_product WHERE itemCategory = 'Grasses'";
+                                $res = mysqli_query($con, $qry);
+                                echo mysqli_num_rows($res);
                                 ?>
                                 Products
                             </small>
@@ -431,9 +431,9 @@
                             <h6>Seed Plants</h6>
                             <small class="text-body pr-4">
                                 <?php
-                                    $qry = "SELECT *  FROM add_product WHERE itemCategory = 'Seed Plants'";
-                                    $res = mysqli_query($con,$qry);
-                                    echo mysqli_num_rows($res);
+                                $qry = "SELECT *  FROM add_product WHERE itemCategory = 'Seed Plants'";
+                                $res = mysqli_query($con, $qry);
+                                echo mysqli_num_rows($res);
                                 ?>
                                 Products
                             </small>
@@ -451,39 +451,37 @@
     <div class="container-fluid pt-5 pb-3">
         <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Featured Products</span></h2>
         <div class="row px-xl-5">
-            
-                        <?php
-                            $qry = "SELECT * FROM add_product LIMIT 8";
-                            $res = mysqli_query($con,$qry);
 
-                            if(mysqli_num_rows($res) > 0)
-                            {
-                              while($arr = mysqli_fetch_array($res))
-                              {
-                          ?>
+            <?php
+            $qry = "SELECT * FROM add_product LIMIT 8";
+            $res = mysqli_query($con, $qry);
 
-                                <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-                                    <div class="product-item bg-light mb-4">
-                                        <div class="product-img position-relative overflow-hidden">
-                                            <?php
-                                                echo "<img class='img-fluid w-100' style='height:50vh;' src='../admin/uploaded-images/".$arr['itemPhoto']."' >";
-                                            ?>
-                                            <!-- <img class="img-fluid w-100" src="'../../uploaded-images/".$arr['itemPhoto']."'" alt=""> -->
-                                            <!-- <div class="product-action">
+            if (mysqli_num_rows($res) > 0) {
+                while ($arr = mysqli_fetch_array($res)) {
+            ?>
+
+                    <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                        <div class="product-item bg-light mb-4">
+                            <div class="product-img position-relative overflow-hidden">
+                                <?php
+                                echo "<img class='img-fluid w-100' style='height:50vh;' src='../admin/uploaded-images/" . $arr['itemPhoto'] . "' >";
+                                ?>
+                                <!-- <img class="img-fluid w-100" src="'../../uploaded-images/".$arr['itemPhoto']."'" alt=""> -->
+                                <!-- <div class="product-action">
                                                 <a class="btn btn-outline-dark btn-square" href="src/cart.php?profile=<?php echo $profile ?>"><i class="fa fa-shopping-cart"></i></a>
                                                 <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
                                                 <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
-                                                <a class="btn btn-outline-dark btn-square" href="src/detail.php?profile=<?php echo $profile ?>&id=<?php echo $arr['id']?>"><i class="fa fa-search"></i></a>
+                                                <a class="btn btn-outline-dark btn-square" href="src/detail.php?profile=<?php echo $profile ?>&id=<?php echo $arr['id'] ?>"><i class="fa fa-search"></i></a>
                                             </div> -->
-                                        </div>
-                                        <div class="text-center py-4">
-                                            <a class="h6 text-decoration-none text-truncate" href="src/detail.php?profile=<?php echo $profile ?>&id=<?php echo $arr['id']?>"  > <?php echo $arr['itemTitle']       ?> </a>
-                                            <div class="d-flex align-items-center justify-content-center mt-2">
-                                                <h5> $<?php echo $arr['itemPrice']       ?>.00 </h5>
-                                                <h6 class="text-muted ml-2"><del>$<?php echo ($arr['itemPrice']-2)*2?>.00</del></h6>
-                                                <!-- <h6 class="text-muted ml-2"><del>$123.00</del></h6> -->
-                                            </div>
-                                            <!-- <div class="d-flex align-items-center justify-content-center mb-1">
+                            </div>
+                            <div class="text-center py-4">
+                                <a class="h6 text-decoration-none text-truncate" href="src/detail.php?profile=<?php echo $profile ?>&id=<?php echo $arr['id'] ?>"> <?php echo $arr['itemTitle']       ?> </a>
+                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                    <h5> $<?php echo $arr['itemPrice']       ?>.00 </h5>
+                                    <h6 class="text-muted ml-2"><del>$<?php echo ($arr['itemPrice'] - 2) * 2 ?>.00</del></h6>
+                                    <!-- <h6 class="text-muted ml-2"><del>$123.00</del></h6> -->
+                                </div>
+                                <!-- <div class="d-flex align-items-center justify-content-center mb-1">
                                                 <small class="fa fa-star text-primary mr-1"></small>
                                                 <small class="fa fa-star text-primary mr-1"></small>
                                                 <small class="fa fa-star text-primary mr-1"></small>
@@ -491,15 +489,15 @@
                                                 <small class="fa fa-star text-primary mr-1"></small>
                                                 <small>(99)</small>
                                             </div> -->
-                                        </div>
-                                    </div>
-                                    </div>
-                        <?php
-                              }
-                            } else {
-                              echo "No! Record Found";
-                            }
-                          ?>
+                            </div>
+                        </div>
+                    </div>
+            <?php
+                }
+            } else {
+                echo "No! Record Found";
+            }
+            ?>
         </div>
     </div>
     <!-- Products End -->
