@@ -208,7 +208,7 @@ function getFlowerInfo($flower_name) {
                                         $user_id =  $profile - 10201211;
                         ?>
 
-                        <form action="../process/process_add_to_cart.php?profile=<?php echo $profile?>" method="POST">
+                        <form action="../process/process_add_to_cart.php?profile=<?php echo $profile?>&id=<?php echo $arr['id']?>" method="POST">
 
                             <div class="h-100 bg-light p-30">
                                 <h3><?php echo $arr['itemTitle']?></h3>

@@ -8,6 +8,7 @@
         require('../common/connect.php');
         $profile = $_GET['profile'];
         $user_id =  $profile - 10201211;
+        
         if(isset($_GET['id']) && $_GET['id'] != ''){
             $product_id = $_GET['id'];
             
