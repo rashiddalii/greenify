@@ -20,17 +20,19 @@
 
 1. Browse and purchase a variety of plants.
 
-2. Secure payment processing with Stripe integration.
+2. Secure payment processing with **Stripe integration**.
 
-3. Option for Cash on Delivery (COD).
+3. Option for Cash on Delivery **(COD)**.
 
-4. Review System: Users can add reviews for plants they purchase, helping other customers make informed decisions.
+4. **Review System:** Users can add reviews for plants they purchase, helping other customers make informed decisions.
 
-5. Google Gemini API integration to provide dynamic plant care information. When browsing plants, users can receive helpful details on optimal care, including region, season, and more.
+5. **Google Gemini API integration** to provide dynamic plant care information. When browsing plants, users can receive helpful details on optimal care, including region, season, and more.
 
-6. Admin Panel: Manage your inventory by adding, editing, or removing plants.
+6. **Admin Panel:** Manage your inventory by adding, editing, or removing plants.
 
-7. Efficient and responsive design for a seamless user experience.
+7. **Track Profits and Sales:** The admin panel allows the admin to keep track of profits and sales, providing insights into the business’s performance.
+
+8. Efficient and responsive design for a **seamless user experience**.
 
 # Usage
 
