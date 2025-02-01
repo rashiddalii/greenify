@@ -18,7 +18,7 @@
                 header("location:../../account-RL/sign-in/index.php");
             }else
             {
-                $qry_check = "SELECT * FROM add_to_cart WHERE product_id = '$product_id'";
+                $qry_check = "SELECT * FROM add_to_cart WHERE product_id = '$product_id' AND user_id = '$user_id'";
                 $res_check = mysqli_query($con,$qry_check);
                 
                 // echo mysqli_num_rows($res_check) > 0;

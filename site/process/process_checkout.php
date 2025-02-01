@@ -1,62 +1,57 @@
 <?php
-   session_start();
-   require('../common/connect.php');
+session_start();
+require('../common/connect.php');
 
-//    if(isset($_POST["submit_signup"] ) && $_POST["submit_signup"]=="signup"){
+$email = $_POST['email'];
+$fname = $_POST['fname'];
+$lname = $_POST['lname'];
+$address = $_POST['address'];
+$amount = $_POST['amount'];
+$mobile = $_POST['mobile'];
+$payment_method = $_POST['payment'];
 
+$profile = $_GET['profile'];
+$user_id = $profile - 10201211;
 
+if ($user_id == 0) {
+    $_SESSION['error_login'] = "Please login first!";
+    header("location:../../account-RL/sign-in/index.php");
+    return;
+}
 
-   //Step 1: Grab all the data from $_post array and save it in variables
-    $email = $_POST['email'];
-    $fname = $_POST['fname'];
-    $lname = $_POST['lname'];
-    $address = $_POST['address'];
-    $amount = $_POST['amount'];
-    $mobile = $_POST['mobile'];
-    $payment_method = $_POST['payment'];
+$qry = "INSERT INTO checkout(email, fname, lname, payment_method, address, mobile, amount, user_id, order_status) 
+VALUES('$email', '$fname', '$lname', '$payment_method', '$address', '$mobile', '$amount', '$user_id', 'PENDING')";
+$res = mysqli_query($con, $qry);
 
-    $profile = $_GET['profile'];
-    $user_id =  $profile - 10201211;
+if ($res) {
+    // Step 1: Fetch user's cart items
+    $cart_qry = "SELECT product_id, quantity FROM add_to_cart WHERE user_id = '$user_id'";
+    $cart_res = mysqli_query($con, $cart_qry);
 
-    if($user_id == 0){
-        $_SESSION['error_login'] = "Please login first!";   
-        header("location:../../account-RL/sign-in/index.php");
-        return;
+    while ($cart_item = mysqli_fetch_assoc($cart_res)) {
+        $product_id = $cart_item['product_id'];
+        $cart_quantity = $cart_item['quantity'];
+
+        // Step 2: Reduce the product quantity in add_product table
+        $update_qry = "UPDATE add_product 
+                       SET itemQuantity = GREATEST(itemQuantity - $cart_quantity, 0) 
+                       WHERE id = '$product_id'";
+        mysqli_query($con, $update_qry);
     }
 
-    
-    // if(isset($_POST['user_id'])){
-    //     $user_id = $_POST['user_id'];
-    // }else{
-    //     $user_id = 0;
-    // }
-    
-    //step 3: write your query
-    $qry = "INSERT INTO checkout(email,fname,lname,payment_method,address,mobile,amount,user_id,order_status) 
-    VALUES('$email','$fname','$lname','$payment_method','$address','$mobile','$amount','$user_id','PENDING')";
+    // Step 3: Remove items from cart after order placement
+    $delete_cart_qry = "DELETE FROM add_to_cart WHERE user_id = '$user_id'";
+    mysqli_query($con, $delete_cart_qry);
 
-
-    //step4: execute your query
-    $res = mysqli_query($con,$qry);
-
-    if(isset($res) && $res != ""){
-        if($payment_method==1){
-            header("location:../stripe/index.php?amount=$amount&profile=$profile");
-        }else{
-            $_SESSION['op_msg'] = "Order Placed Sucessfully";
-            header("location:../src/orders.php?profile=$profile");
-        }
-    } else{
-        $_SESSION['op_msg'] = "Some Error occured";
-        header("location:../src/checkout.php?profile=$profile");
+    // Step 4: Redirect based on payment method
+    if ($payment_method == 1) {
+        header("location:../stripe/index.php?amount=$amount&profile=$profile");
+    } else {
+        $_SESSION['op_msg'] = "Order Placed Successfully";
+        header("location:../src/orders.php?profile=$profile");
     }
-
-
-
-//    } else {
-//       $_SESSION['msg'] = "Unsual Activity";
-//       header("location:index.php");
-//    }
-
-
+} else {
+    $_SESSION['op_msg'] = "Some Error Occurred";
+    header("location:../src/checkout.php?profile=$profile");
+}
 ?>
