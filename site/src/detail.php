@@ -2,6 +2,84 @@
     session_start();  
     require('../common/connect.php');
 ?>
+
+<?php
+
+function convertMarkdownToHtml($content) {
+    // Convert **bold** to <strong>bold</strong>
+    $content = preg_replace('/\*\*(.*?)\*\*/', '<strong>$1</strong>', $content);
+    
+    // Convert *italic* to <em>italic</em>
+    $content = preg_replace('/\*(.*?)\*/', '<em>$1</em>', $content);
+
+    // Convert bullet points (e.g., * item) to <ul><li>item</li></ul>
+    $content = preg_replace('/\*\s(.*?)(\n|$)/', '<ul><li>$1</li></ul>', $content);
+    
+    // Convert newlines to <br> tags for line breaks (if needed)
+    $content = nl2br($content);
+
+    return $content;
+}
+
+// Function to get content from Gemini API for the given flower name
+function getFlowerInfo($flower_name) {
+    // Define the Gemini API URL and API Key
+    $apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyB7od1mNYczFfs8LRnnnHYlmx6q8UP998Q';
+    $apiKey = 'AIzaSyB7od1mNYczFfs8LRnnnHYlmx6q8UP998Q';  // Replace with your actual Gemini API key
+
+    // Prepare the data to send in the POST request
+    $data = [
+        "contents" => [
+            [
+                "parts" => [
+                    ["text" => "Provide general information about the best region, season, uses, and daily care for " . $flower_name . " without specifying any particular type. Just general advice applicable to a wide range of common plants. Do not include introductory content, disclaimers, or generalizations. Just the relevant information for the plant."]
+                ]
+            ]
+        ]
+    ];
+
+    // Initialize cURL
+    $ch = curl_init();
+
+    // Set cURL options
+    curl_setopt($ch, CURLOPT_URL, $apiUrl);  // API URL with the key
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);  // Return the response as a string
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);  // Disable SSL verification (not recommended for production)
+    curl_setopt($ch, CURLOPT_POST, true);  // Use POST request
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',  // Set content type to JSON
+    ]);
+
+    // Encode the data to JSON format
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data)); 
+
+    // Execute the request and get the response
+    $response = curl_exec($ch);
+
+    // Check if there were any cURL errors
+    if (curl_errno($ch)) {
+        echo 'Error:' . curl_error($ch);
+        return '';
+    } else {
+        // Decode the JSON response
+        $responseData = json_decode($response, true);
+
+        $content = $responseData['candidates'][0]['content']['parts'][0]['text'];
+        $html_content = convertMarkdownToHtml($content);
+    }
+
+    // Close the cURL session
+    curl_close($ch);
+
+    // Return the HTML content
+    return $html_content;
+}
+
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -164,58 +242,6 @@
                                 
                                 <input name="product_id" type="hidden" value="<?php echo $arr['id']?>" >
                                 
-                                <!-- <div class="d-flex mb-3">
-                                    <strong class="text-dark mr-3">Sizes:</strong>
-                                    <form>
-                                        <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input" id="size-1" name="size">
-                                            <label class="custom-control-label" for="size-1">XS</label>
-                                        </div>
-                                        <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input" id="size-2" name="size">
-                                            <label class="custom-control-label" for="size-2">S</label>
-                                        </div>
-                                        <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input" id="size-3" name="size">
-                                            <label class="custom-control-label" for="size-3">M</label>
-                                        </div>
-                                        <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input" id="size-4" name="size">
-                                            <label class="custom-control-label" for="size-4">L</label>
-                                        </div>
-                                        <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input" id="size-5" name="size">
-                                            <label class="custom-control-label" for="size-5">XL</label>
-                                        </div>
-                                    </form>
-                                </div>
-                                
-                                <div class="d-flex mb-4">
-                                    <strong class="text-dark mr-3">Colors:</strong>
-                                    <form>
-                                        <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input" id="color-1" name="color">
-                                            <label class="custom-control-label" for="color-1">Black</label>
-                                        </div>
-                                        <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input" id="color-2" name="color">
-                                            <label class="custom-control-label" for="color-2">White</label>
-                                        </div>
-                                        <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input" id="color-3" name="color">
-                                            <label class="custom-control-label" for="color-3">Red</label>
-                                        </div>
-                                        <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input" id="color-4" name="color">
-                                            <label class="custom-control-label" for="color-4">Blue</label>
-                                        </div>
-                                        <div class="custom-control custom-radio custom-control-inline">
-                                            <input type="radio" class="custom-control-input" id="color-5" name="color">
-                                            <label class="custom-control-label" for="color-5">Green</label>
-                                        </div>
-                                    </form>
-                                </div> -->
-                                
                                 <div class="d-flex align-items-center mb-4 pt-2">
                                     <div class="input-group quantity mr-3" style="width: 130px;">
                                         <div class="input-group-btn ">
@@ -277,41 +303,10 @@
                                 </div>
                                 <div class="tab-pane fade" id="tab-pane-2">
                                     <h4 class="mb-3">Additional Information</h4>
-                                    <p>Eos no lorem eirmod diam diam, eos elitr et gubergren diam sea. Consetetur vero aliquyam invidunt duo dolores et duo sit. Vero diam ea vero et dolore rebum, dolor rebum eirmod consetetur invidunt sed sed et, lorem duo et eos elitr, sadipscing kasd ipsum rebum diam. Dolore diam stet rebum sed tempor kasd eirmod. Takimata kasd ipsum accusam sadipscing, eos dolores sit no ut diam consetetur duo justo est, sit sanctus diam tempor aliquyam eirmod nonumy rebum dolor accusam, ipsum kasd eos consetetur at sit rebum, diam kasd invidunt tempor lorem, ipsum lorem elitr sanctus eirmod takimata dolor ea invidunt.</p>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <ul class="list-group list-group-flush">
-                                                <li class="list-group-item px-0">
-                                                    Sit erat duo lorem duo ea consetetur, et eirmod takimata.
-                                                </li>
-                                                <li class="list-group-item px-0">
-                                                    Amet kasd gubergren sit sanctus et lorem eos sadipscing at.
-                                                </li>
-                                                <li class="list-group-item px-0">
-                                                    Duo amet accusam eirmod nonumy stet et et stet eirmod.
-                                                </li>
-                                                <li class="list-group-item px-0">
-                                                    Takimata ea clita labore amet ipsum erat justo voluptua. Nonumy.
-                                                </li>
-                                            </ul> 
-                                        </div>
-                                        <div class="col-md-6">
-                                            <ul class="list-group list-group-flush">
-                                                <li class="list-group-item px-0">
-                                                    Sit erat duo lorem duo ea consetetur, et eirmod takimata.
-                                                </li>
-                                                <li class="list-group-item px-0">
-                                                    Amet kasd gubergren sit sanctus et lorem eos sadipscing at.
-                                                </li>
-                                                <li class="list-group-item px-0">
-                                                    Duo amet accusam eirmod nonumy stet et et stet eirmod.
-                                                </li>
-                                                <li class="list-group-item px-0">
-                                                    Takimata ea clita labore amet ipsum erat justo voluptua. Nonumy.
-                                                </li>
-                                            </ul> 
-                                        </div>
-                                    </div>
+                                    <?php
+                                        // Call the function and echo the returned HTML content for the flower "Rose"
+                                        echo getFlowerInfo($arr['itemTitle']);
+                                    ?>
                                 </div>
                                 <div class="tab-pane fade" id="tab-pane-3">
                                     <div class="row">
@@ -328,11 +323,6 @@
 
                                                     if ($result->num_rows > 0) {
                                                         while ($row = $result->fetch_assoc()) {
-                                                            // echo "<div class='review'>";
-                                                            // echo "<h5>" . htmlspecialchars($row['firstName']) . " - <small>" . date("F j, Y", strtotime($row['created_at'])) . "</small></h5>";
-                                                            // echo "<p>Rating: " . str_repeat("⭐", $row['rating']) . "</p>";
-                                                            // echo "<p>" . htmlspecialchars($row['review']) . "</p>";
-                                                            // echo "</div><hr>";
                                                     ?>
                                                         <h6><?php echo $row['firstName'] . ' ' . $row['lastName'] ?><small> - <i><?php echo date("F j, Y", strtotime($row['created_at'])) ?></i></small></h6>
                                                         <div class="text-primary mb-2">
