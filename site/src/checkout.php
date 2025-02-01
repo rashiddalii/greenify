@@ -1,6 +1,6 @@
 <?php
-    session_start();  
-    require('../common/connect.php');
+session_start();
+require('../common/connect.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,7 +17,7 @@
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">  
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -56,152 +56,159 @@
     </div>
     <!-- Breadcrumb End -->
 
-    <?php  
-        if(isset($_SESSION['op_msg']))
-        {
+    <?php
+    if (isset($_SESSION['op_msg'])) {
     ?>
-            <div class="container-fluid">
-                <div class="row px-xl-5">
-                    <div class="col-12">
-                    <span class="mdi mdi-clipboard-alert bg-success col-md-12 text-white form-control">
-    <?php 
-            echo $_SESSION['op_msg'];
-            unset($_SESSION['op_msg']);
-        }
-    ?>
-                    </span>
-                    </div>
-                </div>
-            </div> 
-    
-            <br>
-
-
-    <!-- Checkout Start -->
-    <div class="container-fluid">
-        <?php
-                                    $profile = $_GET['profile'];
-                                    $user_id =  $profile - 10201211;
-        ?>
-        <form action="../process/process_checkout.php?profile=<?php echo $profile ?>" method="POST">
+        <div class="container-fluid">
             <div class="row px-xl-5">
-                <div class="col-lg-8">
-                    <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Billing Address</span></h5>
-                    <div class="bg-light p-30 mb-5">
-                        <div class="row">
-                            <div class="col-md-6 form-group">
-                                <label>First Name</label>
-                                <input class="form-control" name="fname" type="text" placeholder="Ali" required>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label>Last Name</label>
-                                <input class="form-control" name="lname" type="text" placeholder="Raza" required>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label>E-mail</label>
-                                <input class="form-control" name="email" type="text" placeholder="example@email.com" required>
-                            </div>
-                            <div class="col-md-6 form-group">
-                                <label>Mobile No</label>
-                                <input class="form-control" name="mobile" type="text" placeholder="+123 456 789" required>
-                            </div>
-                            <div class="col-md-12 form-group">
-                                <label>Address</label>
-                                <input class="form-control" name="address" type="text" placeholder="123 Street" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Order Total</span></h5>
-                    <div class="bg-light p-30 mb-5">
+                <div class="col-12">
+                    <span class="mdi mdi-clipboard-alert bg-success col-md-12 text-white form-control">
                     <?php
-                        // if(isset($_GET['profile'])){
-                        //     $profile = $_GET['profile'];
-                        //     ?>
-                            <input type="hidden" name="user_id" value="<?php echo $profile?>">
-                             <?php
-                        // }else{
-                        //     $profile = 0;
-                        // }
-
-
-
-                        $qry = "SELECT * FROM shopping_cart WHERE user_id = '$user_id'";
-                        $res = mysqli_query($con,$qry);
-                
-                        if(mysqli_num_rows($res) == 1)
-                        {
-                            $arr = mysqli_fetch_array($res);
+                    echo $_SESSION['op_msg'];
+                    unset($_SESSION['op_msg']);
+                }
                     ?>
-                        <div class="border-bottom pt-3 pb-2">
-                            <div class="d-flex justify-content-between mb-3">
-                                <h6>Subtotal</h6>
-                                <h6> Rs <?php echo $arr['subTotal']?>.00</h6>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <h6 class="font-weight-medium">Shipping</h6>
-                                <h6 class="font-weight-medium">Rs 100.00</h6>
-                            </div>
-                        </div>
-                        <div class="pt-2">
-                            <div class="d-flex justify-content-between mt-2">
-                                <h5>Total</h5>
-                                <h6>Rs <?php echo $arr['grandTotal']?>.00</h6>
-                                
-                                <input type="hidden" name="amount" value="<?php echo $arr['grandTotal']?>">
-                            </div>
-                        </div>
-                    <?php
-                        }
-                    ?>
-                    </div>
-                    <div class="mb-5">
-                        <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Payment</span></h5>
-                        <div class="bg-light p-30">
-                            <div class="form-group">
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input" name="payment" value="1" id="paypal" checked>
-                                    <label class="custom-control-label" for="paypal">Stripe</label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" class="custom-control-input" name="payment" value="2" id="directcheck" >
-                                    <label class="custom-control-label" for="directcheck">Cash on delivery</label>
-                                </div>
-                            </div>
-                            <button class="btn btn-block btn-success font-weight-bold py-3">Place Order</button>
-                        </div>
-                    </div>
+                    </span>
                 </div>
             </div>
-        </form>
-    </div>
-    <!-- Checkout End -->
+        </div>
+
+        <br>
+
+        <?php
+        $user_id = $_GET['profile'] - 10201211;
+        $qry = "SELECT * FROM register_users WHERE id = '$user_id'";
+        $res = mysqli_query($con, $qry);
+
+        if (mysqli_num_rows($res) == 1) {
+            $arr = mysqli_fetch_array($res);
+        ?>
+            <!-- Checkout Start -->
+            <div class="container-fluid">
+                <?php
+                $profile = $_GET['profile'];
+                $user_id =  $profile - 10201211;
+                ?>
+                <form action="../process/process_checkout.php?profile=<?php echo $profile ?>" method="POST">
+                    <div class="row px-xl-5">
+                        <div class="col-lg-8">
+                            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Billing Address</span></h5>
+                            <div class="bg-light p-30 mb-5">
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <label>First Name</label>
+                                        <input class="form-control" name="fname" value="<?php echo $arr['firstName'] ?>" type="text" placeholder="Ali" required>
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label>Last Name</label>
+                                        <input class="form-control" name="lname" value="<?php echo $arr['lastName'] ?>" type="text" placeholder="Raza" required>
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label>E-mail</label>
+                                        <input class="form-control" name="email" value="<?php echo $arr['userEmail'] ?>" type="text" placeholder="example@email.com" required>
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <label>Mobile No</label>
+                                        <input class="form-control" name="mobile" type="text" placeholder="+123 456 789" required>
+                                    </div>
+                                    <div class="col-md-12 form-group">
+                                        <label>Address</label>
+                                        <input class="form-control" name="address" value="<?php echo $arr['address'] ?>" type="text" placeholder="123 Street" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Order Total</span></h5>
+                            <div class="bg-light p-30 mb-5">
+                                <?php
+                                // if(isset($_GET['profile'])){
+                                //     $profile = $_GET['profile'];
+                                //     
+                                ?>
+                                <input type="hidden" name="user_id" value="<?php echo $profile ?>">
+                                <?php
+                                // }else{
+                                //     $profile = 0;
+                                // }
 
 
-    <!-- Footer Start -->
-    <?php require('../common/footer.php'); ?>
-    <!-- Footer End -->
+
+                                $qry = "SELECT * FROM shopping_cart WHERE user_id = '$user_id'";
+                                $res = mysqli_query($con, $qry);
+
+                                if (mysqli_num_rows($res) == 1) {
+                                    $arr = mysqli_fetch_array($res);
+                                ?>
+                                    <div class="border-bottom pt-3 pb-2">
+                                        <div class="d-flex justify-content-between mb-3">
+                                            <h6>Subtotal</h6>
+                                            <h6> Rs <?php echo $arr['subTotal'] ?>.00</h6>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <h6 class="font-weight-medium">Shipping</h6>
+                                            <h6 class="font-weight-medium">Rs 100.00</h6>
+                                        </div>
+                                    </div>
+                                    <div class="pt-2">
+                                        <div class="d-flex justify-content-between mt-2">
+                                            <h5>Total</h5>
+                                            <h6>Rs <?php echo $arr['grandTotal'] ?>.00</h6>
+
+                                            <input type="hidden" name="amount" value="<?php echo $arr['grandTotal'] ?>">
+                                        </div>
+                                    </div>
+                                <?php
+                                }
+                                ?>
+                            </div>
+                            <div class="mb-5">
+                                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Payment</span></h5>
+                                <div class="bg-light p-30">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" class="custom-control-input" name="payment" value="1" id="paypal" checked>
+                                            <label class="custom-control-label" for="paypal">Stripe</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" class="custom-control-input" name="payment" value="2" id="directcheck">
+                                            <label class="custom-control-label" for="directcheck">Cash on delivery</label>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-block btn-success font-weight-bold py-3">Place Order</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        <?php      } ?>
+        <!-- Checkout End -->
 
 
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-success back-to-top"><i class="fa fa-angle-double-up"></i></a>
+        <!-- Footer Start -->
+        <?php require('../common/footer.php'); ?>
+        <!-- Footer End -->
 
 
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-    <script src="../lib/easing/easing.min.js"></script>
-    <script src="../lib/owlcarousel/owl.carousel.min.js"></script>
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-success back-to-top"><i class="fa fa-angle-double-up"></i></a>
 
-    <!-- Contact Javascript File -->
-    <script src="../mail/jqBootstrapValidation.min.js"></script>
-    <script src="../mail/contact.js"></script>
 
-    <!-- Template Javascript -->
-    <script src="../js/main.js"></script>
+        <!-- JavaScript Libraries -->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+        <script src="../lib/easing/easing.min.js"></script>
+        <script src="../lib/owlcarousel/owl.carousel.min.js"></script>
+
+        <!-- Contact Javascript File -->
+        <script src="../mail/jqBootstrapValidation.min.js"></script>
+        <script src="../mail/contact.js"></script>
+
+        <!-- Template Javascript -->
+        <script src="../js/main.js"></script>
 </body>
 
 </html>
