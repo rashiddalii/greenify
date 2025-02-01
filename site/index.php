@@ -70,8 +70,8 @@ if (isset($_GET['profile'])) {
                                 <div class="dropdown-menu dropdown-menu-right">
                                     <?php $profile =  $arr['id'] + 10201211;
                                     // echo "<a href='../vendor/index.php?profile=$profile' class='dropdown-item'>Add Products</a>";
-                                    echo "<a href='../logout.php' class='dropdown-item'>Sign out</a>";
                                     echo "<a href='src/profile.php?profile=$profile' class='dropdown-item'>My Profile</a>";
+                                    echo "<a href='../logout.php' class='dropdown-item'>Sign out</a>";
 
                                     ?>
                                 </div>
@@ -153,7 +153,7 @@ if (isset($_GET['profile'])) {
             <div class="col-lg-9">
                 <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-0">
                     <a href="" class="text-decoration-none d-block d-lg-none">
-                        <span class="h1 text-uppercase text-dark bg-dark px-2">Style</span>
+                        <span class="h1 text-uppercase text-light bg-dark px-2">Style</span>
                         <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">Yard</span>
                     </a>
                     <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
@@ -174,7 +174,7 @@ if (isset($_GET['profile'])) {
                             <a href="src/orders.php?profile=<?php echo $profile ?>" class="nav-item nav-link ">Orders</a>
                             <a href="src/contact.php?profile=<?php echo $profile ?>" class="nav-item nav-link ">Contact</a>
                         </div>
-                        <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
+                        <div class="navbar-nav ml-auto py-0  d-lg-block">
                             <!-- <a href="" class="btn px-0">
                                 <i class="fas fa-heart text-success"></i>
                                 <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">0</span>
@@ -458,20 +458,6 @@ if (isset($_GET['profile'])) {
 
             if (mysqli_num_rows($res) > 0) {
                 while ($arr = mysqli_fetch_array($res)) {
-                    $product_id = $arr['id'];
-
-                    // Fetch average rating for the product
-                    $rating_qry = "SELECT AVG(rating) as avg_rating, COUNT(*) as total_reviews FROM reviews WHERE product_id = $product_id";
-                    $rating_res = mysqli_query($con, $rating_qry);
-                    $rating_row = mysqli_fetch_assoc($rating_res);
-
-                    $average_rating = isset($rating_row['avg_rating']) ? round((float) $rating_row['avg_rating'], 1) : 0; // Handle NULL values
-                    $total_reviews = $rating_row['total_reviews'];
-
-                    // Generate star ratings
-                    $fullStars = floor($average_rating);
-                    $halfStar = ($average_rating - $fullStars) >= 0.5 ? 1 : 0;
-                    $emptyStars = 5 - ($fullStars + $halfStar);
             ?>
 
                     <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
@@ -495,16 +481,14 @@ if (isset($_GET['profile'])) {
                                     <h6 class="text-muted ml-2"><del>$<?php echo ($arr['itemPrice'] - 2) * 2 ?>.00</del></h6>
                                     <!-- <h6 class="text-muted ml-2"><del>$123.00</del></h6> -->
                                 </div>
-                                <div class="d-flex align-items-center justify-content-center text-primary mb-1">
-                                    <?php
-                                    echo str_repeat("<small class='fa fa-star text-primary mr-1'></small>", $fullStars);
-                                    echo $halfStar ? "<small class='fa fa-star-half-alt text-primary mr-1'></small>" : "";
-                                    echo str_repeat("<small class='fa fa-star text-muted mr-1'></small>", $emptyStars);
-                                    ?>
-                                    <small class="<?php echo ($total_reviews > 0) ? 'text-primary' : 'text-dark'; ?>">
-                                        (<?php echo $total_reviews; ?>)
-                                    </small>
-                                </div>
+                                <!-- <div class="d-flex align-items-center justify-content-center mb-1">
+                                                <small class="fa fa-star text-primary mr-1"></small>
+                                                <small class="fa fa-star text-primary mr-1"></small>
+                                                <small class="fa fa-star text-primary mr-1"></small>
+                                                <small class="fa fa-star text-primary mr-1"></small>
+                                                <small class="fa fa-star text-primary mr-1"></small>
+                                                <small>(99)</small>
+                                            </div> -->
                             </div>
                         </div>
                     </div>

@@ -28,8 +28,8 @@
                             <div class="dropdown-menu dropdown-menu-right">
                                 <?php $profile =  $arr['id'] + 10201211;
                                 // echo "<a href='../vendor/index.php?profile=$profile' class='dropdown-item'>Add Products</a>";
-                                echo "<a href='../../logout.php' class='dropdown-item'>Sign out</a>";
                                 echo "<a href='../src/profile.php?profile=$profile' class='dropdown-item'>My Profile</a>";
+                                echo "<a href='../../logout.php' class='dropdown-item'>Sign out</a>";
 
                                 ?>
                             </div>
