@@ -6,12 +6,12 @@
     //} else {
         session_start();
         require('../common/connect.php');
-
+        $profile = $_GET['profile'];
+        $user_id =  $profile - 10201211;
         if(isset($_GET['id']) && $_GET['id'] != ''){
             $product_id = $_GET['id'];
             
-            $profile = $_GET['profile'];
-            $user_id =  $profile - 10201211;
+
 
             if($user_id == 0){
                 $_SESSION['error_login'] = "Please login first!";   

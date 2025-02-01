@@ -18,7 +18,7 @@
         $itemQuantity = $_POST['itemQuantity'];
 
         //UPLOADIG FILE CODE STARTS
-         $fileName = basename($_FILES['itemPhoto']['name']);
+        $fileName = basename($_FILES['itemPhoto']['name']);
         $tmp = $_FILES['itemPhoto']['tmp_name']; 
         $size = $_FILES['itemPhoto']['size']; 
 

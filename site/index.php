@@ -458,6 +458,20 @@ if (isset($_GET['profile'])) {
 
             if (mysqli_num_rows($res) > 0) {
                 while ($arr = mysqli_fetch_array($res)) {
+                    $product_id = $arr['id'];
+
+                    // Fetch average rating for the product
+                    $rating_qry = "SELECT AVG(rating) as avg_rating, COUNT(*) as total_reviews FROM reviews WHERE product_id = $product_id";
+                    $rating_res = mysqli_query($con, $rating_qry);
+                    $rating_row = mysqli_fetch_assoc($rating_res);
+
+                    $average_rating = isset($rating_row['avg_rating']) ? round((float) $rating_row['avg_rating'], 1) : 0; // Handle NULL values
+                    $total_reviews = $rating_row['total_reviews'];
+
+                    // Generate star ratings
+                    $fullStars = floor($average_rating);
+                    $halfStar = ($average_rating - $fullStars) >= 0.5 ? 1 : 0;
+                    $emptyStars = 5 - ($fullStars + $halfStar);
             ?>
 
                     <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
@@ -481,14 +495,16 @@ if (isset($_GET['profile'])) {
                                     <h6 class="text-muted ml-2"><del>$<?php echo ($arr['itemPrice'] - 2) * 2 ?>.00</del></h6>
                                     <!-- <h6 class="text-muted ml-2"><del>$123.00</del></h6> -->
                                 </div>
-                                <!-- <div class="d-flex align-items-center justify-content-center mb-1">
-                                                <small class="fa fa-star text-primary mr-1"></small>
-                                                <small class="fa fa-star text-primary mr-1"></small>
-                                                <small class="fa fa-star text-primary mr-1"></small>
-                                                <small class="fa fa-star text-primary mr-1"></small>
-                                                <small class="fa fa-star text-primary mr-1"></small>
-                                                <small>(99)</small>
-                                            </div> -->
+                                <div class="d-flex align-items-center justify-content-center text-primary mb-1">
+                                    <?php
+                                    echo str_repeat("<small class='fa fa-star text-primary mr-1'></small>", $fullStars);
+                                    echo $halfStar ? "<small class='fa fa-star-half-alt text-primary mr-1'></small>" : "";
+                                    echo str_repeat("<small class='fa fa-star text-muted mr-1'></small>", $emptyStars);
+                                    ?>
+                                    <small class="<?php echo ($total_reviews > 0) ? 'text-primary' : 'text-dark'; ?>">
+                                        (<?php echo $total_reviews; ?>)
+                                    </small>
+                                </div>
                             </div>
                         </div>
                     </div>

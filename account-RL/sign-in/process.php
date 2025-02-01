@@ -33,7 +33,7 @@
         else
         {
             //not login
-            $_SESSION['error_login'] = "Invalid email or password";
+            $_SESSION['error_login'] = "Invaliddd email or password";
             header("location:index.php");
         }
 
