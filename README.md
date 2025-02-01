@@ -16,6 +16,22 @@
 
 4. Update the database connection details in `config.php`.
 
+# Features
+
+1. Browse and purchase a variety of plants.
+
+2. Secure payment processing with Stripe integration.
+
+3. Option for Cash on Delivery (COD).
+
+4. Review System: Users can add reviews for plants they purchase, helping other customers make informed decisions.
+
+5. Google Gemini API integration to provide dynamic plant care information. When browsing plants, users can receive helpful details on optimal care, including region, season, and more.
+
+6. Admin Panel: Manage your inventory by adding, editing, or removing plants.
+
+7. Efficient and responsive design for a seamless user experience.
+
 # Usage
 
 ## Customer Side
@@ -25,6 +41,7 @@
 2. Add your desired plants to the shopping cart.
 
 3. Proceed to checkout and securely make payments using Stripe.
+ 
 
 ## Admin Panel
 
