@@ -7,7 +7,7 @@
 1. Clone this repository to your web server:
 
    ```
-   git clone https://github.com/rashidali18/greenify.git
+   git clone https://github.com/rashiddalii/greenify.git
    ```
 
 2. Configure your web server to serve the project directory.
